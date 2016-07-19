@@ -14,7 +14,7 @@
             <div class="mdl-card__supporting-text" id="description" v-text="slot.content"></div>
             <hr>
             <div class="card-box credit">
-                <div class="mdl-card mdl-shadow--2dp" v-if="casts">
+                <div class="mdl-card mdl-shadow--4dp" v-if="casts">
                     <div class="mdl-card__title">
                         <h3 class="mdl-card__title-text"><i class="material-icons">record_voice_over</i></h3>
                     </div>
@@ -25,7 +25,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="mdl-card mdl-shadow--2dp" v-if="crews">
+                <div class="mdl-card mdl-shadow--4dp" v-if="crews">
                     <div class="mdl-card__title">
                         <h3 class="mdl-card__title-text"><i class="material-icons">people</i></h3>
                     </div>

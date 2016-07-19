@@ -10,7 +10,7 @@
                     <mdl-button @click.prevent="sort('channelId')" colored raised v-mdl-ripple-effect>CHANNEL</mdl-button>
                     <mdl-button @click.prevent="sort('title')" colored raised v-mdl-ripple-effect>TITLE</mdl-button>
                 </div>
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" v-if="slots">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--4dp" v-if="slots">
                     <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric"><a @click.prevent="sort('startAt')" href="#">DATE</a></th>

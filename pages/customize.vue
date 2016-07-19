@@ -4,7 +4,7 @@
             <div class="mdl-cell mdl-cell--1-col">
             </div>
             <div class="mdl-cell mdl-cell--10-col">
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--4dp">
                     <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">ID</th>

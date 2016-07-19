@@ -46,7 +46,7 @@
                 <program-card v-for="program in slot.programs" :program="program"></program-card>
             </div>
             <hr />
-            <center v-text="copyrights[0] || ''"></center>
+            <center v-for="copyright in copyrights" v-text="copyright"></center>
         </div>
         <mdl-cardpage title="見つかりません" width="75" v-if="notfound">
             <div class="mdl-card__supporting-text">

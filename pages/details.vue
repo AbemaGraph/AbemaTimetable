@@ -12,7 +12,11 @@
                 </div>
             </div>
             <div class="mdl-card__supporting-text" id="description" v-text="slot.content"></div>
-            <hr>
+            <hr v-if="thumbs.length && $setting.show_thumb_details" />
+            <div class="thumbs" v-if="thumbs.length && $setting.show_thumb_details">
+                <div class="mdl-shadow--4dp" :style="{ 'backgroundImage': 'url(' + thumb + ')' }" v-for="thumb in thumbs"></div>
+            </div>
+            <hr />
             <div class="card-box credit">
                 <div class="mdl-card mdl-shadow--4dp" v-if="casts">
                     <div class="mdl-card__title">
@@ -63,6 +67,7 @@
                 casts: [],
                 crews: [],
                 copyrights: [],
+                thumbs: [],
                 date: "",
                 slot: null
             };
@@ -78,15 +83,20 @@
                 }
                 let slot = slots[0];
                 console.log(JSON.stringify(slot));
-                let casts = [], crews = [], copyrights = [];
+                let casts = [], crews = [], copyrights = [], thumbs = [];
                 slot.programs.forEach(item => {
-                    (item.credit.casts || []).forEach(cast => casts.indexOf(cast) < 0 &&casts.push(cast));
-                    (item.credit.crews || []).forEach(crew => crews.indexOf(crew) < 0 && crews.push(crew));
-                    (item.credit.copyrights || []).forEach(copyright => copyrights.indexOf(copyright) < 0 && copyrights.push(copyright));
+                    item.providedInfo && item.providedInfo.sceneThumbImgs && item.providedInfo.sceneThumbImgs.forEach(thumb => {
+                        let img = `//hayabusa.io/abema/programs/${item.id}/${thumb}.w200.h114.webp`;
+                        thumbs.indexOf(img) < 0 && thumbs.push(img);
+                    });
+                    item.credit.casts && item.credit.casts.forEach(cast => casts.indexOf(cast) < 0 && casts.push(cast));
+                    item.credit.crews && item.credit.crews.forEach(crew => crews.indexOf(crew) < 0 && crews.push(crew));
+                    item.credit.copyrights && item.credit.copyrights.forEach(copyright => copyrights.indexOf(copyright) < 0 && copyrights.push(copyright));
                 });
                 this.$set("slot", slot);
                 this.$set("casts", casts);
                 this.$set("crews", crews);
+                this.$set("thumbs", thumbs);
                 this.$set("copyrights", copyrights);
                 this.$set("date", `${moment(slot.startAt * 1000).format('YYYY/MM/DD HH:mm:ss')} - ${moment(slot.endAt * 1000).format('MM/DD HH:mm:ss')}`);
             });
@@ -152,5 +162,18 @@
         margin: 3px 0;
         padding: 5px 16px;
         min-height: unset;
+    }
+    
+    .thumbs {
+        display: flex;
+        flex-direction: row;
+    }
+    .thumbs > div {
+        width: 200px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 120px;
+        margin: 8px;
+        border-radius: .8px;
     }
 </style>

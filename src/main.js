@@ -3,7 +3,7 @@ const VueRouter = require('vue-router');
 const VueMdl = require('vue-mdl').default;
 const MdlCardpage = require('../components/mdl-cardpage.vue');
 const Timetable = require('./timetable.js').default;
-const Setting = require('./setting.js').default;
+const Utils = require('./utils.js').default;
 const Filter = require('./filter.js').default;
 //const Custom = require('./custom.js').default;
 
@@ -13,7 +13,7 @@ require('moment/locale/ja');
 Vue.use(VueRouter);
 Vue.use(VueMdl);
 Vue.use(Timetable);
-Vue.use(Setting);
+Vue.use(Utils);
 Vue.use(Filter);
 //Vue.use(Custom);
 Vue.component("MdlCardpage", MdlCardpage);

@@ -1,10 +1,13 @@
 <template>
-    <main :class="['timetable', 'mdl-layout__content']" v-if="headers" v-el:container>
+    <main class="timetable mdl-layout__content" v-if="headers" v-el:container>
         <div>
             <div class="item header"
                 :style="{ lineHeight: headerHeight + 'px', height: headerHeight + 'px', width: columnWidth + 'px', left: (header.left + timeWidth) + 'px' }"
                 :style.sync="{ top: top + 'px' }"
                 v-for="header in headers">
+                <!--<a v-link="header.link" v-if="appSetting.show_channel_image && header.info">
+                    <img :src="'//hayabusa.io/abema/channels/logo/' + header.info + '.h30.png'" v-if="header.info" />
+                </a>-->
                 <a v-link="header.link" v-if="header.link" v-text="header.title"></a>
                 <span v-else v-text="header.title"></span>
             </div>
@@ -14,8 +17,9 @@
                 v-for="time in times" v-text="time.label">
             </div>
             <div class="item slot"
+                :class="{ 'paused': piece.slot.flags.paused || 0 }"
                 :style="{ width: columnWidth + 'px', top: (piece.top + headerHeight) + 'px', left: (piece.left + timeWidth) + 'px', height: piece.height + 'px', minHeight: piece.height + 'px' }"
-                :style.sync="{ background: piece.slot.startAt <= now && piece.slot.endAt >= now ? '#00ffaa' : (piece.slot.endAt <= now ? '#dfdfdf' : '#fff') }"
+                :style.sync="{ background: piece.slot.startAt <= now && piece.slot.endAt >= now ? '#eeffe0' : (piece.slot.endAt <= now ? '#ddd' : '#fff') }"
                 @click="$route.router.go({ name: 'details', params: { channelId: piece.slot.channelId, slotId: piece.slot.id }})"
                 v-for="piece in pieces">
                 {{ piece.start }}
@@ -25,10 +29,10 @@
                     <span class="mark" v-if="piece.slot.mark.live">生</span>
                     <span class="mark" v-if="piece.slot.mark.last">終</span>
                 </div>
-                <div v-if="$setting.show_thumb_epg" class="thumb" :style="{ backgroundImage: 'url(//hayabusa.io/abema/programs/' + piece.slot.programs[0].id + '/' + piece.slot.programs[0].providedInfo.thumbImg + '.w280.h158.webp)' }"></div>
-                <div class="description" v-show="$setting.show_details_epg" v-text="piece.slot.content"></div>
+                <div v-if="appSetting.show_thumb_epg" class="thumb" :style="{ backgroundImage: 'url(//hayabusa.io/abema/programs/' + piece.slot.programs[0].id + '/' + piece.slot.programs[0].providedInfo.thumbImg + '.w280.h158.png)' }"></div>
+                <div class="description" v-show="appSetting.show_details_epg" v-text="piece.slot.content"></div>
             </div>
-            <div v-el:timeline class="timeline" :style.sync="{ top: (headerHeight + ((now - startTimestamp) / 60 * minuteHeight)) + 'px', width: (width - 10) + 'px' }">
+            <div v-el:timeline class="timeline" :style.sync="{ top: (headerHeight + ((now - startTimestamp) / 60 * minuteHeight % (times.length * minuteHeight * 60))) + 'px', width: (width - 10) + 'px' }">
                 {{ nowLabel }}
             </div>
         </div>
@@ -37,7 +41,7 @@
 <script>
     import moment from 'moment'
     export default {
-        props: ['customList'],
+        props: ['customList', 'appSetting', 'tempVars'],
         data() {
             return {
                 pieces: [],
@@ -60,9 +64,8 @@
             buildPieceChannel(media, channelId) {
                 const ONE_DAY = 60 * 60 * 24;
 
-                let channel = media.channels.filter(item => item.id == channelId);
-                if (channel.length != 1) return Promise.reject();
-                channel = channel[0];
+                let channel = media.channels.find(item => item.id == channelId);
+                if (!channel) return Promise.reject();
                 let times = [], headers = [], pieces = [];
                 let maxTimestamp = Math.max.apply(null, media.programs.filter(item => item.channelId == channel.id).map(item => item.endAt));
 
@@ -178,34 +181,34 @@
                     let headerHeight = this.headerHeight;
                     let el = this.$container = this.$els.container;
                     this.draw = () => {
-                        let top = el.scrollTop - 200;
                         this.top = el.scrollTop;
-                        let left = el.scrollLeft - 200;
-                        this.left = el.scrollLeft;
-                        this.width = el.scrollWidth;
-                        let right = left + el.clientWidth + 400;
-                        let bottom = top + el.clientHeight + 400;
-                        let count = 0;
-                        this.pieces = data.pieces.filter(item => {
-                            if(item.node || (item.left + timeWidth > left && item.left + timeWidth < right
-                                && (item.top + headerHeight > top || item.top + headerHeight + item.height > top)
-                                && (item.top + headerHeight < bottom || item.top + headerHeight + item.height < bottom))){
-                                    item.node = true;
-                                    return true;
-                                }
-                            return false;
-                        });
                         this.nowLabel = moment().format('HH:mm');
                         this.now = moment().unix();
-                        if(this.pieces.length != data.pieces.length)
-                            requestAnimationFrame(() => this.draw && this.draw());
-                        else
-                            console.log("completed");
+                        if(this.pieces.length != data.pieces.length) {
+                            let top = el.scrollTop - 200;
+                            let left = el.scrollLeft - 200;
+                            this.left = el.scrollLeft;
+                            this.width = el.scrollWidth;
+                            let right = left + el.clientWidth + 400;
+                            let bottom = top + el.clientHeight + 400;
+                            let count = 0;
+                            this.pieces = data.pieces.filter(item => {
+                                if(item.node || (item.left + timeWidth > left && item.left + timeWidth < right
+                                    && (item.top + headerHeight > top || item.top + headerHeight + item.height > top)
+                                    && (item.top + headerHeight < bottom || item.top + headerHeight + item.height < bottom))){
+                                        item.node = true;
+                                        return true;
+                                    }
+                                return false;
+                            });
+                        }
+                        
+                        requestAnimationFrame(() => this.draw && this.draw());
                     }
                     this.$nextTick(() => {
-                        let info = JSON.parse(this.$shared[`scroll_${this.$route.path}`] || "{}");
-                        this.$container.scrollTop = info.top || 0;
-                        this.$container.scrollLeft = info.left || 0;
+                        let info = JSON.parse(this.tempVars[`scroll_${this.$route.path}`] || "{}");
+                        this.$els.container.scrollTop = info.top || 0;
+                        this.$els.container.scrollLeft = info.left || 0;
                         console.log("Scroll applied", info);
                         this.draw();
                     });
@@ -241,7 +244,7 @@
         route: {
             deactivate() {
                 this.draw = null;
-                this.$shared[`scroll_${this.$route.path}`] = JSON.stringify({
+                this.tempVars[`scroll_${this.$route.path}`] = JSON.stringify({
                     top: this.top || 0,
                     left: this.left || 0
                 });
@@ -250,8 +253,13 @@
         },
         events: {
             scrollToNow() {
-                if(this.$container)
-                    this.$container.scrollTop = this.headerHeight + ((this.now - this.startTimestamp) / 60 * this.minuteHeight) - 200;
+                if(this.$els.container)
+                    this.$scrollToAnimate(this.$els.container, this.headerHeight + ((this.now - this.startTimestamp) / 60 * this.minuteHeight) - 200, -1, 300);
+            },
+            scrollToDate(date) {
+                if(!this.$route.params.channelId) {
+                    this.$scrollToAnimate(this.$els.container, this.headerHeight + ((date - this.startTimestamp) / 60 * this.minuteHeight) - 200, -1, 300);
+                }
             }
         }
     }
@@ -279,6 +287,11 @@
         text-align: center;
         z-index: 150;
     }
+
+    main.timetable .item.header.image {
+        background: #333;
+        border: 1px solid #333;
+    }
     
     main.timetable .item.time {
         text-align: center;
@@ -289,6 +302,25 @@
         font-size: 12px;
     }
     
+    main.timetable .item.slot.paused {
+        position: relative;
+    }
+
+    main.timetable .item.slot.paused:after {
+        position: absolute;
+        content: "休止";
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     main.timetable .item.slot:hover {
         height: unset !important;
         z-index: 100;

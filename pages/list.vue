@@ -51,7 +51,7 @@
 <script>
     import moment from 'moment'
     export default {
-        props: ['customList'],
+        props: ['customList', 'appSetting', 'tempVars'],
         data() {
             let search = this.$route.query || {};
             if("custom" in this.$route.query) {

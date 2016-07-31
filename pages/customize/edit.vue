@@ -4,7 +4,7 @@
         <hr />
         <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--6-col">
-                <mdl-radio v-mdl-ripple-effect :checked.sync="mode" value="timetable" id="timetable">TIMETABLE(CH指定のみ)</mdl-radio>
+                <mdl-radio v-mdl-ripple-effect :checked.sync="mode" value="timetable">TIMETABLE(CH指定のみ)</mdl-radio>
             </div>
             <div class="mdl-cell mdl-cell--6-col">
                 <mdl-radio v-mdl-ripple-effect :checked.sync="mode" value="list">LIST</mdl-radio>

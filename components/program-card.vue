@@ -1,6 +1,6 @@
 <template>
 	<div class="mdl-card mdl-shadow--2dp program-card">
-	    <div class="mdl-card__title mdl-card--expand" v-bind:style="{ backgroundImage: $setting.show_thumb_details ? 'url(//hayabusa.io/abema/programs/' + program.id + '/' + program.providedInfo.thumbImg + '.w280.h158.webp)' : '' }">
+	    <div class="mdl-card__title mdl-card--expand" v-bind:style="{ backgroundImage: appSetting.show_thumb_details ? 'url(//hayabusa.io/abema/programs/' + program.id + '/' + program.providedInfo.thumbImg + '.w280.h158.webp)' : '' }">
 	        <h3 class="mdl-card__title-text">{{ program.episode.name || "" }} {{ program.episode.title }}</h3>
 	    </div>
 	    <div class="mdl-card__supporting-text" v-if="program.episode.title || program.episode.name">
@@ -10,7 +10,7 @@
 </template>
 <script>
     export default {
-        props: ['program']
+        props: ['program', 'appSetting']
     }
 </script>
 <style scoped>

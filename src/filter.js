@@ -12,11 +12,11 @@ export default Vue => {
             if(channels.length > 0 && channels.indexOf(slot.channelId) < 0) return false;
             if (keys.length > 0) {
                 //Mark
-                if (marks.filter(name => slot.mark[name] || false).length != marks.length)
+                if (marks.find(name => !slot.mark[name]))
                     return false;
 
                 //Flag
-                if (flags.filter(name => slot.flag[name] || false).length != flags.length)
+                if (flags.find(name => !slot.flag[name]))
                     return false;
             }
             if (keywords.length != 0) {

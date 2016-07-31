@@ -4,7 +4,9 @@
     </nav>
     <hr />
     <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" v-for="channel in channels | orderBy 'order'" v-link="{ name: 'channel', params: { channelId: channel.id } }">{{ channel.name }}</a>
+        <a class="mdl-navigation__link" v-for="channel in channels | orderBy 'order'" v-link="{ name: 'channel', params: { channelId: channel.id } }">
+            {{ channel.name }}
+        </a>
     </nav>
 </template>
 <script>

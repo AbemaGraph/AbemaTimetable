@@ -12,8 +12,8 @@
                 </div>
             </div>
             <div class="mdl-card__supporting-text" id="description" v-text="slot.content"></div>
-            <hr v-if="thumbs.length && $setting.show_thumb_details" />
-            <div class="thumbs" v-if="thumbs.length && $setting.show_thumb_details">
+            <hr v-if="thumbs.length && appSetting.show_thumb_details" />
+            <div class="thumbs" v-if="thumbs.length && appSetting.show_thumb_details">
                 <div class="mdl-shadow--4dp" :style="{ 'backgroundImage': 'url(' + thumb + ')' }" v-for="thumb in thumbs"></div>
             </div>
             <hr />
@@ -43,7 +43,7 @@
             </div>
             <hr v-if="slot.programs.length" />
             <div class="card-box slot-programs" v-if="slot.programs.length">
-                <program-card v-for="program in slot.programs" :program="program"></program-card>
+                <program-card :app-setting.sync="appSetting" v-for="program in slot.programs" :program="program"></program-card>
             </div>
             <hr />
             <center v-for="copyright in copyrights" v-text="copyright"></center>
@@ -59,6 +59,7 @@
     import ProgramCard from '../components/program-card.vue'
     import moment from 'moment'
     export default {
+        props: ['customList', 'appSetting', 'tempVars'],
         components: {
             ProgramCard: ProgramCard
         },
@@ -76,12 +77,11 @@
             let channelId = this.$route.params.channelId;
             let slotId = this.$route.params.slotId;
             this.$timetable.then(data => {
-                let slots = data.programs.filter(item => item.channelId == channelId && item.id == slotId);
-                if(slots.length != 1) {
+                let slot = data.programs.find(item => item.channelId == channelId && item.id == slotId);
+                if(!slot) {
                     this.$set("notfound", true);
                     return;
                 }
-                let slot = slots[0];
                 console.log(JSON.stringify(slot));
                 let casts = [], crews = [], copyrights = [], thumbs = [];
                 slot.programs.forEach(item => {
@@ -98,7 +98,7 @@
                 this.$set("crews", crews);
                 this.$set("thumbs", thumbs);
                 this.$set("copyrights", copyrights);
-                this.$set("date", `${moment(slot.startAt * 1000).format('YYYY/MM/DD HH:mm:ss')} - ${moment(slot.endAt * 1000).format('MM/DD HH:mm:ss')}`);
+                this.$set("date", `${moment(slot.startAt * 1000).format('YYYY/MM/DD(ddd) HH:mm')} - ${moment(slot.endAt * 1000).format('MM/DD HH:mm')}`);
             });
         },
         methods: {
@@ -167,12 +167,15 @@
     .thumbs {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
     }
     .thumbs > div {
         width: 200px;
+        min-width: 200px;
         background-repeat: no-repeat;
         background-size: cover;
         height: 120px;
+        min-height: 120px;
         margin: 8px;
         border-radius: .8px;
     }

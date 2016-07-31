@@ -69,6 +69,9 @@ router.map({
         component: require('../pages/customize/edit.vue')
     },
     
+    '/info': {
+        component: require('../pages/info.vue')
+    },
     '*': {
         component: require('../pages/notfound.vue')
     }

@@ -53,7 +53,7 @@ let loadJsonData = (file) => {
 
 let getIndexedDB = () => {
     return new Promise((resolve, reject) => {
-        if (!window.indexedDB) reject();
+        if (typeof window.indexedDB == 'undefined') reject();
         let openRequest = window.indexedDB.open(Config.databaseName, 1);
         openRequest.addEventListener('upgradeneeded', e => {
             let db = openRequest.result;

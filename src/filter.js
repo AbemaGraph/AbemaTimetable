@@ -3,7 +3,7 @@ export default Vue => {
         let keywords = (search.keyword || "").split(/ /).filter(str => str.length > 0);
         let mode = search.mode && search.mode == "and";
         let keys = search.mark || [];
-        let marks = keys.filter(name => ['first', 'last', 'live'].indexOf(name) >= 0);
+        let marks = keys.filter(name => ['first', 'last', 'live', 'bingeWatching'].indexOf(name) >= 0);
         let flags = keys.filter(name => ['timeshift', 'share', 'paused'].indexOf(name) >= 0);
         let titleOnly = (search.flag || []).indexOf('title') >= 0;
         let channels = search.channels || [];

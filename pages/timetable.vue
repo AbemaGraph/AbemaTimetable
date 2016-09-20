@@ -24,6 +24,7 @@
                 v-for="piece in pieces">
                 {{ piece.start }}
                 <div class="name">
+                    <span class="mark" v-if="piece.slot.mark.bingeWatching">一挙</span>
                     {{ piece.slot.title }}
                     <span class="mark" v-if="piece.slot.mark.first">初</span>
                     <span class="mark" v-if="piece.slot.mark.live">生</span>

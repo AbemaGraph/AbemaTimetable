@@ -23,6 +23,7 @@
                             <td class="mdl-data-table__cell--non-numeric">{{ moment(slot.startAt * 1000).format('MM/DD(ddd) HH:mm') }} - {{ moment(slot.endAt * 1000).format('HH:mm') }}</td>
                             <td class="mdl-data-table__cell--non-numeric"><a v-link="{ 'path': '/list/channel/' + slot.channelId }">{{ findChannel(slot.channelId) }}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">
+                                <span class="mark" v-if="slot.mark.bingeWatching">一挙</span>
                                 <span class="mark" v-if="slot.mark.first">初</span>
                                 <span class="mark" v-if="slot.mark.live">生</span>
                                 <a v-link="{ 'name': 'details', params: { channelId: slot.channelId, slotId: slot.id }}">{{ slot.title }}</a>

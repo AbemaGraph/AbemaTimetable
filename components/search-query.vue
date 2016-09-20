@@ -15,6 +15,9 @@
                 <mdl-checkbox v-mdl-ripple-effect :checked.sync="search.mark" value="live">生</mdl-checkbox>
             </div>
             <div class="mdl-cell mdl-cell--2-col">
+                <mdl-checkbox v-mdl-ripple-effect :checked.sync="search.mark" value="bingeWatching">一挙</mdl-checkbox>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col">
                 <mdl-checkbox v-mdl-ripple-effect :checked.sync="search.mark" value="timeshift">TS可</mdl-checkbox>
             </div>
             <div class="mdl-cell mdl-cell--2-col">

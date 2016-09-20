@@ -2,9 +2,16 @@
     <main class="mdl-layout__content">
         <div class="mdl-card mdl-shadow--16dp" v-if="slot">
             <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text" v-text="slot.title"></h2>
+                <h2 class="mdl-card__title-text">
+                    <span class="mark" v-if="slot.mark.bingeWatching">一挙</span>
+                    <span class="mark" v-if="slot.mark.first">初</span>
+                    <span class="mark" v-if="slot.mark.live">生</span>
+                    {{ slot.title }}
+                    <span class="mark" v-if="slot.mark.last">終</span>
+                </h2>
                 <p class="mdl-card__subtitle-text">
-                    <i v-text="date"></i>
+                    <i>{{ date }}</i>
+                    <i v-if="!slot.flag.timeshift">タイムシフトなし</i>
                 </p>
                 <div class="mdl-card__title-button">
                     <mdl-button raised colored v-mdl-ripple-effect @click="openNowOnAir(slot.channelId)"><i class="material-icons">play_circle_filled</i> 視聴ページ</mdl-button>
@@ -169,6 +176,7 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
+
     .thumbs > div {
         width: 200px;
         min-width: 200px;
@@ -178,5 +186,16 @@
         min-height: 120px;
         margin: 8px;
         border-radius: .8px;
+    }
+
+    .mark {
+        color: #fff;
+        font-size: 15px;
+        border: 1.5px solid #f00;
+        border-radius: 2px;
+        background: rgba(255, 0, 0, 0.5);
+        text-decoration: none;
+        height: 18px;
+        line-height: 18px;
     }
 </style>

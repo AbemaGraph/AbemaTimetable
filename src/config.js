@@ -1,6 +1,6 @@
 export default {
-    timetableJsonUrl: "//abemagraph.tk/data/timetable.json",
+    timetableJsonUrl: "//abemagraph.info/data/timetable.json",
     timetableCacheName: 'timetable.json',
     databaseName: 'abm_timetable',
-    cacheExpire: 3600
+    cacheExpire: 3600 * 6
 };

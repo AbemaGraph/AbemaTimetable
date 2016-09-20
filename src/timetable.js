@@ -1,5 +1,6 @@
 const Config = require('./config.js').default;
 const moment = require('moment');
+require('whatwg-fetch');
 let fetchMediaData = () => {
     console.log("loading media...");
     return fetch(Config.timetableJsonUrl, { mode: 'cors' }).then(response => response.json());

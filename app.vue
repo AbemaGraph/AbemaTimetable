@@ -100,8 +100,13 @@
 <style>
     body {
         font-family: Arial, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック';
+        
     }
 
+    .mdl-layout {
+        overflow: hidden;
+    }
+    
     .mdl-navigation__link.v-link-active:not(.no-select) {
         background: #ddd;
     }

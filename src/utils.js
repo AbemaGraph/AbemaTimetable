@@ -18,7 +18,7 @@ export default Vue => {
                 let animate = () => {
                     let elapsed = Date.now() - begin;
                     let percent = elapsed / time;
-                    if(percent > 1.00) {
+                    if(percent >= 1.00) {
                         scrollTo(currentTop + diffTop, currentLeft + diffLeft);
                         return;
                     }
